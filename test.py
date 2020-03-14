@@ -18,10 +18,7 @@ db=mysql.connector.connect(host="stock.crne5vznig3b.ap-south-1.rds.amazonaws.com
 
 @app.route("/")
 def hello_world():
-    api_url = "https://financialmodelingprep.com/api/v3/historical-price-full/infy?from=2018-12-01&to=2019-12-31"
-    response = req.get(api_url)
-    data = response.json()
-    return render_template('login.html', hist=data)
+    return render_template('login.html')
 
 @app.route("/user/<username>")
 def show_user_name(username): 
@@ -41,7 +38,7 @@ def details_company():
     if request.method == 'POST':
         cname = request.form.get('companyname')
     rating_api = "https://financialmodelingprep.com/api/v3/company/rating/" + cname
-    print(rating_api)
+    # print(rating_api)
     dcf_api = "https://financialmodelingprep.com/api/v3/company/discounted-cash-flow/" + cname.upper()
     profile_api = "https://financialmodelingprep.com/api/v3/company/profile/" + cname
     profile_response = req.get(profile_api)
@@ -49,7 +46,7 @@ def details_company():
     rating_response = req.get(rating_api)
     dcf_response = req.get(dcf_api)
     rating_data = rating_response.json()
-    print(rating_data)
+    # print(rating_data)
     dcf_data = dcf_response.json()
     return render_template('compdetails.html', data=cname, rating=rating_data,dcf=dcf_data,profile=profile_data)
 
@@ -131,7 +128,7 @@ def longterm_search():
         comsymbol.append(row[3])
 
     db.commit()
-    print(mycursor.rowcount)
+    # print(mycursor.rowcount)
     return render_template("longtermsearch.html",compname=comname,comprice=compprice, comexchange=comexchange, compsymbol=comsymbol)
 
 @app.route("/longterm/<longtermname>/index")
@@ -145,8 +142,8 @@ def longterm_prediction(longtermname):
         # print((data_30["historical"][i]["date"]).split('-')[2])
         dates.append([int((data_30["historical"][i]["date"]).replace('-',''))])
         prices.append(data_30["historical"][i]["close"])
-    print(dates)
-    print(prices)
+    # print(dates)
+    # print(prices)
     # estimation = gbr_estimator(dates,prices)
     # print(estimation)
     algo_name=["RFC","ADR","BGR","GBR","HGBR","RBF"]
@@ -157,9 +154,9 @@ def longterm_prediction(longtermname):
     diff = []
     for i in range(len(yes_pred)):
         diff.append(abs(yes_pred[i]-org))
-    print(diff)
-    print(min(diff))
-    print(algo_name[diff.index(min(diff))])
+    # print(diff)
+    # print(min(diff))
+    # print(algo_name[diff.index(min(diff))])
     confirmation = yes_pred[diff.index(min(diff))]
     # db=mysql.connector.connect(host="localhost", user="root", passwd="",database="stock")
     mycursor = db.cursor()
@@ -171,7 +168,7 @@ def longterm_prediction(longtermname):
         compnames  = row[1]
 
     db.commit()
-    print(mycursor.rowcount)
+    # print(mycursor.rowcount)
     news_result = news_analysis(compnames)
     twitter_result = twitter_analysis(compnames)
     return render_template("longterm.html",comnames=compnames,newsapi=news_result,twitterapi=twitter_result,sdates=dates,sprices=prices,alogsresult=yes_pred, confirmed=confirmation)
@@ -195,13 +192,13 @@ def intraday_search():
         comsymbol.append(row[3])
 
     db.commit()
-    print(mycursor.rowcount)
+    # print(mycursor.rowcount)
     return render_template("intradaysearch.html",compname=comname,comprice=compprice, comexchange=comexchange, compsymbol=comsymbol)
 
 @app.route("/intraday/<intracomp>/index")
 def intraday_prediction(intracomp):
     comppname = intracomp.lower()
-    print(comppname)
+    # print(comppname)
     api_url = "https://cloud.iexapis.com/stable/stock/" + comppname +"/intraday-prices?token=pk_16f5315051b240f5a1d5058dd880179b"
     response = req.get(api_url)
     data_30 = response.json()
@@ -219,7 +216,7 @@ def intraday_prediction(intracomp):
     # api_url = "https://cloud.iexapis.com/stable/stock/aapl/intraday-prices?token=pk_16f5315051b240f5a1d5058dd880179b"
     # response = req.get(api_url)
     # data_30 = response.json()
-    print("The length is ", len(data_30))
+    # print("The length is ", len(data_30))
     # returndata = intrapred(minute_list[:(len(data_30)-1)],price_list[:(len(data_30)-1)],[[(len(data_30)+15)]])
     returndata = intrapred(minute_list[:45],price_list[:45],[[60]])
     intratestreturn = intratestpred(minute_list, price_list,[[45]])
@@ -230,7 +227,7 @@ def intraday_prediction(intracomp):
     #         intratestlist.append(",")
     # print("======================================================================================")
     # print(intratestlist)
-    print(returndata)  
+    # print(returndata)  
     new_minutes = []
     for i in range(0, len(minute_list)):
         new_minutes.append(i)
@@ -244,7 +241,7 @@ def intraday_prediction(intracomp):
         compnames  = row[1]
 
     db.commit()
-    print(mycursor.rowcount)
+    # print(mycursor.rowcount)
     news_result = news_analysis(compnames)
     twitter_result = twitter_analysis(compnames)
     return render_template("intra.html",companyname=compnames,newsapi=news_result,twitterapi=twitter_result,times=new_minutes,intratest=intratestreturn,pricelist=price_list, predictions=returndata[0], accuracy=returndata[1])
