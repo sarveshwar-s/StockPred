@@ -1,0 +1,48 @@
+<html>
+    <head>
+        {% include 'library.html' %}
+    </head>
+    <body>
+        {% include 'navbar.html' %}
+        <br>
+        <div class="container">
+            <div class="row">
+                {% for i in range(0, clist.mostActiveStock|length) %}
+                <!-- START OF PANEL -->
+                <div class="col-md-4" style="padding:5px;">
+                    <div class="card">
+                            <div class="card-body">
+                              <h5 class="card-title">{{clist.mostActiveStock[i].companyName}}</h5>
+                              <p class="card-text">Some quick example text to build on the panel title and make up the bulk of the panel's content.</p>
+                              <div class="row">
+                                  <div class="col">
+                              <form action="/investment/compdetails" method="post">
+                                <input type="text" name="companyname" value="{{clist.mostActiveStock[i].ticker}}"hidden>
+                                    <input type="submit" class="btn btn-success" name="aapl" value="Details">
+                              </form>
+                            </div>
+                            <div class="col">
+                              <button class="btn btn-danger" value="BUY">BUY</button>
+                            </div>
+                            </div>
+                            </div>
+                          </div>
+                        </div>
+                <!-- END OF PANEL -->
+                {% endfor %}
+                        <!-- <div class="col-md-4">
+                                <div class="card">
+                                        <div class="card-body">
+                                          <h5 class="card-title">Panel title</h5>
+                                          <p class="card-text">Some quick example text to build on the panel title and make up the bulk of the panel's content.</p>
+                                          <a class="card-link">Card link</a>
+                                          <a class="card-link">Another link</a>
+                                        </div>
+                                      </div>
+                                    </div> -->
+                                    {{clist|length}}
+                                    {{clist}}
+            </div>
+        </div>
+    </body>
+</html>

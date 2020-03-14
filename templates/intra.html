@@ -1,0 +1,94 @@
+<!-- <html>
+    <head>
+        <title> Stockcast </title>
+    </head>
+    <body>
+        <h1> Intraday </h1>
+        {% for valus in range(0,predictions|length) %}
+        {{ predictions[valus] }}
+        {{accuracy[valus]}}
+        {% endfor %}
+        
+    </body>
+</html> -->
+<html>
+    <head>
+        <!-- Load plotly.js into the DOM -->
+        {% include 'library.html' %}
+        {% include 'navbar.html'%}
+        <!-- MDBootstrap Datatables  -->
+   <link href="/static/node_modules/mdbootstrap/css/addons/datatables.min.css" rel="stylesheet">
+   <!-- MDBootstrap Datatables  -->
+   <script type="text/javascript" src="/static/node_modules/mdbootstrap/js/addons/datatables.min.js"></script>
+        <script src='https://cdn.plot.ly/plotly-latest.min.js'></script>
+    </head>    
+<body>
+        <center><h1> Intraday of {{companyname}}  </h1></center><br>
+        <div class="container">
+        <div class="row">
+        {% for valus in range(0,predictions|length) %}
+        <div class="col" style="padding-left:10px;">
+
+        <div class="card">
+            <div class="card-body">
+              <h5 class="card-title">ALGO {{valus+1}}</h5>
+              <p class="card-text">  {{ predictions[valus][0] }} </p>
+              <p class="card-text"> Accuracy: {{accuracy[valus]*100}} </p>
+            </div>
+          </div>
+
+        </div>
+        {% endfor %}
+        
+    </div>
+</div>
+<br>
+    <div id='myDiv'><!-- Plotly chart will be drawn inside this DIV --></div>
+    <br>
+    <!-- <p>Apple Computer Inc. reported yesterday that its earnings fell 84.3 percent, to $17.4 million, in its second fiscal quarter, despite increased revenues and unit shipments. But the company said that sales of its new Power Macintosh models, introduced in March, were ahead of plan and partly compensated for slowing sales of older machines.   Apple's earnings of 15 cents a share were well below the consensus estimate of Wall Street analysts, which was 22 cents. That did not account for a debt offering in February that cost about 5 cents a share.</p> -->
+    <p>
+        <h6 style="color: black">News Analysis</h6>
+        <h6 style="color: green">Positive: {{newsapi[0]}} %</h6>
+        <h6 style="color: red">Negative: {{newsapi[1]}} %</h6>
+        <h6 style="color: yellow">Neutral: {{newsapi[2]}} %</h6>
+    </p>
+    <p>
+            <h6 style="color: black">Twitter Analysis</h6>
+            <h6 style="color: green">Positive: {{twitterapi[0]}} %</h6>
+            <h6 style="color: red">Negative: {{twitterapi[1]}} %</h6>
+            <h6 style="color: yellow">Neutral: {{twitterapi[2]}} %</h6>
+        </p>
+        
+    </body>
+    <script>
+        // var minuteslist = {{times}}
+        
+
+        var trace1 = {
+  x: {{times}},
+  y: {{pricelist}},
+  type: 'scatter'
+};
+
+{% for i in range(0, predictions|length) %}
+var trace{{i+2}} = {
+  x: [29],
+  y: {{predictions[i]}},
+  type: 'scatter'
+};
+{% endfor %}
+
+var trace6 = {
+  x: {{times}},
+  y: {{intratest}},
+  type: 'scatter'
+};
+
+
+var data = [trace1, trace2, trace3,trace4,trace5, trace6];
+
+Plotly.newPlot('myDiv', data);
+
+        </script>
+  </html>
+  

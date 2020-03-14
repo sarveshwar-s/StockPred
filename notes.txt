@@ -1,0 +1,57 @@
+LIBRARIES TO BE INSTALLED FOR RUNNING STOCKCAST:
+pip install matplotlib
+pip install scikit-learn
+pip install schedule
+<-- optional--> pip install numpy
+<-- optional(used for ploting graphs)--> pip install plotly==4.5.0
+
+set FLASK_ENV=development
+use "python -m flask run" to run flask in debug mode.
+
+We Use TWEEPY for accessing twitter data.
+
+RULES FOR FLASK FILE HIERARCHY:
+Always store library files and third party files in the folder called "static"
+Always store the html files in the folder called "template"
+
+
+THE BELOW CODE PRINTS THE FINANCIAL STATEMENT IN THE FORM OF TABLE ENTRIES
+<tr>
+                    <td>
+                        {% set mylist = ['date','Revenue','Revenue Growth','Cost of Revenue',
+                        'Gross Profit','R&D Expenses','SG&A Expense','Operating Expenses','Operating Income','Interest Expense',
+                        'Earnings before Tax','Income Tax Expense','Net Income - Non-Controlling int','Net Income - Discontinued ops','Net Income',
+                        'Preferred Dividends','Net Income Com','EPS','EPS Diluted','Weighted Average Shs Out','Weighted Average Shs Out (Dil)',
+                        'Dividend per Share','Gross Margin','EBITDA Margin','EBIT Margin','Profit Margin','Free Cash Flow margin', 'EBITDA','EBIT','Consolidated Income',
+                        'Earnings Before Tax Margin','Net Profit Margin'] %}
+
+                        {% for i in range(0, mylist|length) %}
+                        {% for j in range(0, finance_annual.financials|length ) %}
+                        {{  finance_annual["financials"][j][mylist[i]] }}
+                        {% endfor %}
+                        {% endfor %}
+                    </td>
+                </tr>
+
+### TODO LIST(03/02/2020) ###
+1) Finish up the cashflow annual design  ##DONE
+   Finish up the entreprise design       ##DONE
+   Finish up the finance statement design ##DONE
+2) Automate the Intraday Trading design
+3) Integrate the ML Algo python script with design.
+4) Deploy in AWS ECS.
+5) Backup all api data to mysql server !!TO BE DONE QUICKLY
+6) Design glitch in complist page   ##DONE
+NOTES: Every route goes through the single routing file named test.py
+
+##CODE TO REFRESH AUTOMATICALLY FOR INTRADAY:
+<script>
+        $(document).ready(function() {
+            // auto refresh page after 1 second
+            setInterval('refreshPage()', 6000);
+        });
+    
+        function refreshPage() { 
+            location.reload(); 
+        }
+    </script>

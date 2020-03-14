@@ -1,0 +1,76 @@
+<html>
+        <head>
+                <!-- Load plotly.js into the DOM -->
+                {% include 'library.html' %}
+                {% include 'navbar.html'%}
+                <!-- MDBootstrap Datatables  -->
+           <link href="/static/node_modules/mdbootstrap/css/addons/datatables.min.css" rel="stylesheet">
+           <!-- MDBootstrap Datatables  -->
+           <script type="text/javascript" src="/static/node_modules/mdbootstrap/js/addons/datatables.min.js"></script>
+                <script src='https://cdn.plot.ly/plotly-latest.min.js'></script>
+            </head>    
+    <body>
+        <center><h1>Longterm investment for {{comnames}}</h1></center> <br>
+        <div class="container">
+                <div class="row">
+                {% for valus in range(0,alogsresult|length) %}
+                <div class="col" style="padding-left:10px;">
+        
+                <div class="card">
+                    <div class="card-body">
+                      <h5 class="card-title">ALGO {{valus+1}}</h5>
+                      <p class="card-text">  {{ alogsresult[valus] }} </p>
+                    </div>
+                  </div>
+        
+                </div>
+                
+                {% endfor %}
+                
+            </div>
+        </div>
+        <br>
+        <center>
+                    <h6 style="color:Red">Speculated Price:</h6>
+                    <h6 style="color:green">{{confirmed}}</h6>
+                </center>
+        <div id='myDiv'><!-- Plotly chart will be drawn inside this DIV --></div>
+
+        <p>
+                <h6 style="color: black">News Analysis</h6>
+                <h6 style="color: green">Positive: {{newsapi[0]}} %</h6>
+                <h6 style="color: red">Negative: {{newsapi[1]}} %</h6>
+                <h6 style="color: yellow">Neutral: {{newsapi[2]}} %</h6>
+            </p>
+            <p>
+                    <h6 style="color: black">Twitter Analysis</h6>
+                    <h6 style="color: green">Positive: {{twitterapi[0]}} %</h6>
+                    <h6 style="color: red">Negative: {{twitterapi[1]}} %</h6>
+                    <h6 style="color: yellow">Neutral: {{twitterapi[2]}} %</h6>
+                </p>
+                
+    
+    </body>
+    <script>
+            // var minuteslist = {{times}}
+            
+    
+            var trace1 = {
+      x: {{10}},
+      y: {{sprices}},
+      type: 'scatter'
+    };
+    
+    
+    // var trace2 = {
+    //   x: [180],
+    //   y: [120],
+    //   type: 'scatter'
+    // };
+    
+    var data = [trace1];
+    
+    Plotly.newPlot('myDiv', data);
+    
+            </script>
+</html>

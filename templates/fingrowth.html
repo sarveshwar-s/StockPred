@@ -1,0 +1,69 @@
+<html>
+    <head>
+        {% include 'library.html' %}
+        <!-- MDBootstrap Datatables  -->
+<link href="/static/node_modules/mdbootstrap/css/addons/datatables.min.css" rel="stylesheet">
+<!-- MDBootstrap Datatables  -->
+<script type="text/javascript" src="/static/node_modules/mdbootstrap/js/addons/datatables.min.js"></script>
+     <script>
+     
+     $(document).ready(function () {
+$('#dtBasicExample').DataTable();
+$('.dataTables_length').addClass('bs-select');
+});
+
+    </script>
+    <style>
+    table.dataTable thead .sorting:after,
+table.dataTable thead .sorting:before,
+table.dataTable thead .sorting_asc:after,
+table.dataTable thead .sorting_asc:before,
+table.dataTable thead .sorting_asc_disabled:after,
+table.dataTable thead .sorting_asc_disabled:before,
+table.dataTable thead .sorting_desc:after,
+table.dataTable thead .sorting_desc:before,
+table.dataTable thead .sorting_desc_disabled:after,
+table.dataTable thead .sorting_desc_disabled:before {
+  bottom: .5em;
+}
+#titlec{
+    color: black;
+}
+    </style>
+    </head>
+    <body>
+        {% include 'navbar.html' %}
+        <h1> Finance growth </h1>
+        <table id="dtBasicExample" class="table table-striped table-bordered table-sm" cellspacing="0" width="100%">
+            <thead>
+                <tr>
+                        <th>Date</th>
+                        {% for i in range(0, financestate.growth|length) %}
+                        <th> {{financestate.growth[i].date}} </th>
+                        {% endfor %}
+                    </tr>
+            </thead>
+            <tbody>
+                {% set finstatelist = ['date','Gross Profit Growth','EBIT Growth','Operating Income Growth',
+        'Net Income Growth','EPS Growth','EPS Diluted Growth','Weighted Average Shares Growth','Weighted Average Shares Diluted Growth',
+        'Dividends per Share Growth','Operating Cash Flow growth','Free Cash Flow growth','10Y Revenue Growth (per Share)','5Y Revenue Growth (per Share)',
+        '3Y Revenue Growth (per Share)','10Y Operating CF Growth (per Share)','5Y Operating CF Growth (per Share)','3Y Operating CF Growth (per Share)',
+        '10Y Net Income Growth (per Share)','5Y Net Income Growth (per Share)','3Y Net Income Growth (per Share)','10Y Shareholders Equity Growth (per Share)',
+        '5Y Shareholders Equity Growth (per Share)','3Y Shareholders Equity Growth (per Share)','10Y Dividend per Share Growth (per Share)','5Y Dividend per Share Growth (per Share)',
+        '3Y Dividend per Share Growth (per Share)','Receivables growth','Inventory Growth','Asset Growth','Book Value per Share Growth','Debt Growth','R&D Expense Growth','SG&A Expenses Growth'] %}
+        
+                    {% for i in range(0, finstatelist|length) %}
+                 <tr>
+                        <td><strong>{{ finstatelist[i] }}</strong></td>
+                        {% for j in range(0, financestate.growth|length ) %}
+                        <td>
+                        {{  financestate["growth"][j][finstatelist[i]] }}
+                        </td>
+                        {% endfor %}
+                 </tr>
+                    {% endfor %}
+        </tbody>
+        </table>
+        <!-- {{financestate}} -->
+    </body>
+</html>

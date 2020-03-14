@@ -1,0 +1,200 @@
+<html>
+    <head>
+        {% include 'library.html' %}
+        <style>
+        #buy{
+            color: green;
+        }
+        #sell{
+            color: red;
+        }
+        </style>
+    </head>
+    <body>
+        {% include 'navbar.html' %}
+    <div class="container">
+        <div class="row">
+            <img src="{{profile.profile.image}}" class="rounded float-left" style="height:60px;width:60px;" alt="logo">
+            <h1 style="padding-left:10px;padding-top:10px;">{{profile.profile.companyName}} ($ {{profile.profile.price}})</h1>
+        </div>
+    <!-- <h1>Company: {{data}}</h1> -->
+    
+    <div class="row">
+            <div class="col">
+                    <form action="/investment/finstate/{{data}}">
+                        <input type="submit" class="btn btn-primary btn-lg" value="Finance Details">
+                    </form>
+            </div>
+            <div class="col">
+                    <form action="/investment/enterprise/{{data}}">
+                        <input type="submit" class="btn btn-primary btn-lg" value="Enterprise Details">
+                    </form>
+            </div>
+            <div class="col">
+                    <form action="/investment/finstatement/{{data}}">
+                        <input type="submit" class="btn btn-primary btn-lg" value="Finance Statement">
+                    </form>
+            </div>
+        </div>
+
+        
+    <h3 id="#ratings"><strong>Ratings:</strong></h3>
+    <div class="row">
+        <div class="col">
+        <div class="card">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col">
+                    <p>Score</p>  
+                    <p>Rating</p>
+                    <p>Recommendation</p>
+                    <p>DCF</p>
+                    </div>
+                    <div class="col">
+                        <p>{{rating.rating.score}}/5</p>
+                        <p>{{rating.rating.rating}}</p>
+                        {% if rating["rating"]["recommendation"]=="Strong Buy" or rating["rating"]["recommendation"]=="Buy" %}
+                            <p id="buy">{{rating.rating.recommendation}}</p>
+                            {% else %}
+                            <p id="sell">{{rating.rating.recommendation}}</p>
+                            {% endif %}
+                        <p>{{dcf.dcf}}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col">
+        <div class="card">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col">
+                        <p>P/B</p>  
+                        <p>ROA</p>
+                        <p>DCF</p>
+                        <p>P/E</p>
+                        <p>ROE</p>
+                        <p>D/E</p>
+                        </div>
+                        <div class="col">
+                            {% if rating["ratingDetails"]["P/B"]["recommendation"]=="Strong Buy" or rating["ratingDetails"]["P/B"]["recommendation"]=="Buy" %}
+                            <p id="buy">{{rating["ratingDetails"]["P/B"]["recommendation"]}}</p>
+                            {% else %}
+                            <p id="sell">{{rating["ratingDetails"]["P/B"]["recommendation"]}}</p>
+                            {% endif %}
+                            {% if rating["ratingDetails"]["ROA"]["recommendation"]=="Strong Buy" or rating["ratingDetails"]["ROA"]["recommendation"]=="Buy" %}
+                            <p id="buy">{{rating["ratingDetails"]["ROA"]["recommendation"]}}</p>
+                            {% else %}
+                            <p id="sell">{{rating["ratingDetails"]["ROA"]["recommendation"]}}</p>
+                            {% endif %}
+                            {% if rating["ratingDetails"]["DCF"]["recommendation"]=="Strong Buy" or rating["ratingDetails"]["DCF"]["recommendation"]=="Buy" %}
+                            <p id="buy">{{rating["ratingDetails"]["DCF"]["recommendation"]}}</p>
+                            {% else %}
+                            <p id="sell">{{rating["ratingDetails"]["DCF"]["recommendation"]}}</p>
+                            {% endif %}
+                            {% if rating["ratingDetails"]["P/E"]["recommendation"]=="Strong Buy" or rating["ratingDetails"]["P/E"]["recommendation"]=="Buy" %}
+                            <p id="buy">{{rating["ratingDetails"]["P/E"]["recommendation"]}}</p>
+                            {% else %}
+                            <p id="sell">{{rating["ratingDetails"]["P/E"]["recommendation"]}}</p>
+                            {% endif %}
+                            
+                            {% if rating["ratingDetails"]["ROE"]["recommendation"]=="Strong Buy" or rating["ratingDetails"]["ROE"]["recommendation"]=="Buy" %}
+                            <p id="buy">{{rating["ratingDetails"]["ROE"]["recommendation"]}}</p>
+                            {% else %}
+                            <p id="sell">{{rating["ratingDetails"]["ROE"]["recommendation"]}}</p>
+                            {% endif %}
+
+                            {% if rating["ratingDetails"]["D/E"]["recommendation"]=="Strong Buy" or rating["ratingDetails"]["D/E"]["recommendation"]=="Buy" %}
+                            <p id="buy">{{rating["ratingDetails"]["D/E"]["recommendation"]}}</p>
+                            {% else %}
+                            <p id="sell">{{rating["ratingDetails"]["D/E"]["recommendation"]}}</p>
+                            {% endif %}
+                            <!-- <p>{{rating["ratingDetails"]["DCF"]["recommendation"]}}</p> -->
+                            <!-- <p>{{rating["ratingDetails"]["P/E"]["recommendation"]}}</p> -->
+                            <!-- <p>{{rating["ratingDetails"]["ROE"]["recommendation"]}}</p> -->
+                            <!-- <p>{{rating["ratingDetails"]["D/E"]["recommendation"]}}</p> -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- <p>
+        {{rating}}
+    </p> -->
+    <!-- <h2> Discounted Cash Flow</h2>
+    <p>
+        {{dcf}}
+    </p> -->
+    {% set changesvalues = profile.profile.changes %}
+        <h3 id="#profile"><strong>Profile</strong></h3>
+        <div class="row">
+            <div class="col">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="row">
+                        <div class="col">
+                            <p>Price</p>
+                            <p>Changes(in price)</p>
+                            <p>Changes(in %)</p>
+                            <p>Beta</p>
+                            <p>Volume Avg</p>
+                            <p>Market Capital</p>
+                            <p>Last Dividend</p>
+                            <p>Range</p>
+                        </div>
+                        <div class="col">
+                            <p>{{profile.profile.price}}</p>
+                            <p>  {% if changesvalues < 0 %}
+                                <h6 id="loss">{{profile.profile.changes}}</h6>
+                                {% else %}
+                                 <h6 id="profit">{{profile.profile.changes}}</h6>
+                               {% endif %}</p>
+                            <p>{{profile.profile.changesPercentage}}</p>
+                            <p>{{profile.profile.beta}}</p>
+                            <p>{{profile.profile.volAvg}}</p>
+                            <p>{{profile.profile.mktCap}}</p>
+                            <p>{{profile.profile.lastDiv}}</p>
+                            <p>{{profile.profile.range}}</p>
+                        </div>
+                    </div>
+                        
+                    </div>
+                  </div>
+            </div>
+            <div class="col">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="row">
+                        <div class="col">
+                            <p>Visit</p>
+                            <!-- <p>Description</p> -->
+                            <p>CEO</p>
+                            <p>Stock Exchange</p>
+                            <p>Sector</p>
+                        </div>
+                        <div class="col">
+                            <p><a href="{{profile.profile.website}}" target="_blank">{{profile.profile.website}}</a></p>
+                            <!-- <p>{{profile.profile.description}}</p> -->
+                            <p>{{profile.profile.ceo}}</p>
+                            <p>{{profile.profile.exchange}}</p>
+                            <p>{{profile.profile.sector}}</p>
+                        </div>
+                    </div>
+                    </div>
+                  </div>
+            </div>
+        </div>
+
+        <!-- {{profile}} -->
+    <!-- <form action="/investment/profile/{{data}}">
+        <input type="submit" class="btn btn-primary btn-lg" value="PROFILE Details">
+    </form> -->
+    
+   
+    
+
+</div>
+    </body>
+</html>

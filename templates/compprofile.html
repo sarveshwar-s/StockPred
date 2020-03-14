@@ -1,0 +1,81 @@
+<html>
+    <head>
+        {% include 'library.html' %}
+        <style>
+          #loss{
+              color: red;
+          }
+          #profit{
+              color: green;
+          }
+        </style>
+    </head>
+    <body>
+        {% include 'navbar.html' %}
+        <br>
+        <div class="container">
+        <!-- Get data from the api and display it here -->
+        {% set changesvalues = profile.profile.changes %}
+        <h1>GETS DATA FROM API</h1>
+        <div class="row">
+            <div class="col">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="row">
+                        <div class="col">
+                            <p>Price</p>
+                            <p>Changes(in price)</p>
+                            <p>Changes(in %)</p>
+                            <p>Beta</p>
+                            <p>Volume Avg</p>
+                            <p>Market Capital</p>
+                            <p>Last Dividend</p>
+                            <p>Range</p>
+                        </div>
+                        <div class="col">
+                            <p>{{profile.profile.price}}</p>
+                            <p>  {% if changesvalues < 0 %}
+                                <h6 id="loss">{{profile.profile.changes}}</h6>
+                                {% else %}
+                                 <h6 id="profit">{{profile.profile.changes}}</h6>
+                               {% endif %}</p>
+                            <p>{{profile.profile.changesPercentage}}</p>
+                            <p>{{profile.profile.beta}}</p>
+                            <p>{{profile.profile.volAvg}}</p>
+                            <p>{{profile.profile.mktCap}}</p>
+                            <p>{{profile.profile.lastDiv}}</p>
+                            <p>{{profile.profile.range}}</p>
+                        </div>
+                    </div>
+                        
+                    </div>
+                  </div>
+            </div>
+            <div class="col">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="row">
+                        <div class="col">
+                            <p>Visit</p>
+                            <!-- <p>Description</p> -->
+                            <p>CEO</p>
+                            <p>Stock Exchange</p>
+                            <p>Sector</p>
+                        </div>
+                        <div class="col">
+                            <p><a href="{{profile.profile.website}}" target="_blank">{{profile.profile.website}}</a></p>
+                            <!-- <p>{{profile.profile.description}}</p> -->
+                            <p>{{profile.profile.ceo}}</p>
+                            <p>{{profile.profile.exchange}}</p>
+                            <p>{{profile.profile.sector}}</p>
+                        </div>
+                    </div>
+                    </div>
+                  </div>
+            </div>
+        </div>
+
+        <!-- {{profile}} -->
+    </div>
+    </body>
+</html>

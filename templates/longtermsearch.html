@@ -1,0 +1,60 @@
+<html>
+    <head> <title> Stockcast</title>
+        {% include 'library.html'%}
+        {% include 'navbar.html' %}
+        <!-- MDBootstrap Datatables  -->
+        <link href="/static/node_modules/mdbootstrap/css/addons/datatables.min.css" rel="stylesheet">
+        <!-- MDBootstrap Datatables  -->
+        <script type="text/javascript" src="/static/node_modules/mdbootstrap/js/addons/datatables.min.js"></script>
+    <script>
+    $(document).ready(function () {
+  $('#dtBasicExample').DataTable();
+  $('.dataTables_length').addClass('bs-select');
+});
+    </script>
+    </head>
+    <body>
+            <table id="dtBasicExample" class="table table-striped table-bordered table-sm" cellspacing="0" width="100%">
+                    <thead>
+                      <tr>
+                        <th class="th-sm">Company Name
+                  
+                        </th>
+                        <th class="th-sm">Price
+                  
+                        </th>
+                        <th class="th-sm">Stock Symbol
+                  
+                        </th>
+                        <th class="th-sm">Exchange
+                  
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                        
+                            {% for i in range(0, comprice|length) %}
+                      <tr>
+                        <td><a href="/longterm/{{compsymbol[i]}}/index">{{compname[i]}}</a></td>
+                        <td>{{compsymbol[i]}}</td>
+                        <td>{{comprice[i]}}</td>
+                        <td>{{comexchange[i]}}</td>
+                      </tr>
+                      {% endfor %}
+                    </tbody>
+                    <tfoot>
+                      <tr>
+                            <th>Company Name
+                                </th>
+                                <th>Price
+                                </th>
+                                <th>Stock Symbol
+                                </th>
+                                <th>Exchange
+                                </th>
+                       
+                      </tr>
+                    </tfoot>
+                  </table>
+    </body>
+</html>
