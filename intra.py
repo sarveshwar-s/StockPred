@@ -82,8 +82,8 @@ for i in range(1,(len(data_30)+1)):
         price_list.append(data_30[i-2]["open"])
     else:
         price_list.append(data_30[i-1]["open"])
-print(minute_list)
-print(price_list)
+# print(minute_list)
+# print(price_list)
 def tobedone(x):
     api_url = "https://cloud.iexapis.com/stable/stock/aapl/intraday-prices?token=pk_16f5315051b240f5a1d5058dd880179b"
     response = req.get(api_url)
