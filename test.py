@@ -12,7 +12,7 @@ from intratest import intratestpred
 
 app = Flask(__name__)
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run()
 db=mysql.connector.connect(host="stock.crne5vznig3b.ap-south-1.rds.amazonaws.com", user="admin", passwd="testingalgos",database="trading")
 
 
