@@ -13,7 +13,8 @@ from intratest import intratestpred
 app = Flask(__name__)
 if __name__ == '__main__':
     app.run()
-db=mysql.connector.connect(host="stock.crne5vznig3b.ap-south-1.rds.amazonaws.com", user="admin", passwd="testingalgos",database="trading")
+# Replace host name with your amazon host name and database with your db name
+db=mysql.connector.connect(host="stock.crne5vznig3b.ap-south-1.rds.amazonaws.com", user="admin", passwd="YOUR_DB_PASSWORD",database="trading")
 
 
 @app.route("/")
