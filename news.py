@@ -2,7 +2,7 @@ from textblob import TextBlob
 # from textblob.sentiments import NaiveBayesAnalyzer
 import requests as req
 
-# api = "https://api.nytimes.com/svc/search/v2/articlesearch.json?q=GOOG&api-key=rN5bN0aS0mOuHgcx2MnaA2Ilu2lTMUHJ"
+# api = "https://api.nytimes.com/svc/search/v2/articlesearch.json?q=GOOG&api-key=YOUR_API_KEY"
 
 
 # print(datas["response"]["docs"][0]["lead_paragraph"]) #This is for newyork times
@@ -10,7 +10,7 @@ def news_analysis(compname):
     positive = 0
     negative = 0
     neutral = 0
-    api = "http://newsapi.org/v2/everything?q="+ compname +"&apiKey=5c91d5fe23a441aa8301bd5c08759185"
+    api = "http://newsapi.org/v2/everything?q="+ compname +"&apiKey=API_KEY"
     responses = req.get(api)
     datas = responses.json()
     articles_len = len(datas["articles"])
