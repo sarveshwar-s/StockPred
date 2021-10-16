@@ -4,10 +4,10 @@ import requests as req
 import os
 import pandas as pd
 
-consumer_key= '8nwbC4hBHjo9j3NQGqWpE5iru'
-consumer_secret= 'ctVkSyXeVplMvslMAPWlMJFSV8kcIsHVkIaGUumym3k7Exe6qL'
-access_token= '1237023172819468291-zmQY2o42A23OgH1Yh9E7ytrrkCzSUR'
-access_token_secret= 'fg7GXqr41arubI2mv6jrnsD3NGdM2k6PYVCzaPmhGWq4b'
+consumer_key= 'YOUR_CONSUMER_KEY'
+consumer_secret= 'YOUR_CONSUMER_SECRET_KEY'
+access_token= 'YOUR_ACCESS_TOKEN'
+access_token_secret= 'YOUR_SECRET_ACCESS_TOKEN'
 
 def twitter_analysis(compname):
     auth = tw.OAuthHandler(consumer_key,consumer_secret)
