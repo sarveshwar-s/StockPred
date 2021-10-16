@@ -16,7 +16,7 @@ data = response.json()
 
 # db.commit()
 # print(mycursor.rowcount)
-db=mysql.connector.connect(host="stock.crne5vznig3b.ap-south-1.rds.amazonaws.com", user="admin", passwd="testingalgos",database="trading")
+db=mysql.connector.connect(host="stock.crne5vznig3b.ap-south-1.rds.amazonaws.com", user="admin", passwd="YOUR_PASSWORD",database="trading")
 mycursor = db.cursor()
 selectquery="SELECT * FROM intrasymbols where id=11"
 # insertquery = "INSERT INTO `intrasymbols`(`company_name`,`price`,`stock_symbol`,`exchange`) VALUES (%s,%s,%s,%s)"
