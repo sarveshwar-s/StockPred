@@ -200,7 +200,7 @@ def intraday_search():
 def intraday_prediction(intracomp):
     comppname = intracomp.lower()
     # print(comppname)
-    api_url = "https://cloud.iexapis.com/stable/stock/" + comppname +"/intraday-prices?token=pk_16f5315051b240f5a1d5058dd880179b"
+    api_url = "https://cloud.iexapis.com/stable/stock/" + comppname +"/intraday-prices?token=YOUR_API_KEY"
     response = req.get(api_url)
     data_30 = response.json()
     # print("The length is ", len(data_30))
@@ -214,7 +214,7 @@ def intraday_prediction(intracomp):
             price_list.append(data_30[1]["open"])
         else:
             price_list.append(data_30[i-1]["open"])
-    # api_url = "https://cloud.iexapis.com/stable/stock/aapl/intraday-prices?token=pk_16f5315051b240f5a1d5058dd880179b"
+    # api_url = "https://cloud.iexapis.com/stable/stock/aapl/intraday-prices?token=YOUR_API_KEY"
     # response = req.get(api_url)
     # data_30 = response.json()
     # print("The length is ", len(data_30))
