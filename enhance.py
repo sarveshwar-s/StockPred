@@ -18,7 +18,7 @@ print(year+month+dayss)
 
 def tobedone(x):
     print("my job is",x)
-    api_url = "https://cloud.iexapis.com/stable/stock/aapl/intraday-prices?token=pk_16f5315051b240f5a1d5058dd880179b"
+    api_url = "https://cloud.iexapis.com/stable/stock/aapl/intraday-prices?token=YOUR_API_KEY"
     response = req.get(api_url)
     data_30 = response.json()
     print("The length is ", len(data_30),"The highvalue is ", data_30[len(data_30)-1]["high"])
