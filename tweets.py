@@ -19,7 +19,7 @@ def twitter_analysis(compname):
     search_words = search_words + " " + "-filter:retweets"
     date_since = "2020-03-05"
 
-    tweets = tw.Cursor(api.search, q=search_words, lang="en", since=date_since).items(10)
+    tweets = tw.Cursor(api.search_tweets, q=search_words, lang="en", since=date_since).items(10)
     total = 0
     positive = 0
     negative = 0

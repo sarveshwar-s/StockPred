@@ -14,8 +14,6 @@ from sklearn.ensemble import RandomForestRegressor
 from sklearn.ensemble import AdaBoostRegressor
 from sklearn.ensemble import BaggingRegressor
 from sklearn.ensemble import GradientBoostingRegressor
- # explicitly require this experimental feature for histgradientboostingRegressor as it is still in experimental stage
-from sklearn.experimental import enable_hist_gradient_boosting
 from sklearn.ensemble import HistGradientBoostingRegressor
 
 from sklearn.metrics import explained_variance_score
@@ -63,14 +61,14 @@ def prediction_close(dates,prices,x):
     print("BGR VALUE:", bgr.predict(x), "BGR SCORE:", bgr.score(dates,prices))
     result_list.append(bgr.predict(x)[0])
 
-    gbr = GradientBoostingRegressor(n_estimators=100,loss='lad')
+    gbr = GradientBoostingRegressor(n_estimators=100,loss='absolute_error')
     gbr.fit(dates,prices)
     # print(gbr.predict(dates))
     print("GBR VALUE:", gbr.predict(x), "GBR SCORE:", gbr.score(dates,prices))
     result_list.append( gbr.predict(x)[0])
 
     #in hgbr n_estimator is replaced by max_iter, controls the number of iteration of the boosting process
-    hgbr = HistGradientBoostingRegressor(max_iter=100,loss='least_absolute_deviation',warm_start=True)
+    hgbr = HistGradientBoostingRegressor(max_iter=100,loss='absolute_error',warm_start=True)
     hgbr.fit(dates,prices)
     print("HGBR VALUE:", hgbr.predict(x), "HGBR SCORE:", hgbr.score(dates,prices))
     result_list.append(hgbr.predict(x)[0])
@@ -85,13 +83,13 @@ def prediction_close(dates,prices,x):
 
 def gbr_estimator(dates,prices):
     variance_list = []
-    gbr = GradientBoostingRegressor(n_estimators=100,loss='lad')
+    gbr = GradientBoostingRegressor(n_estimators=100,loss='absolute_error')
     gbr.fit(dates,prices)
     adr = AdaBoostRegressor(n_estimators=100,learning_rate=1)
     adr.fit(dates,prices)
     bgr = BaggingRegressor(n_estimators=100)
     bgr.fit(dates,prices)
-    hgbr = HistGradientBoostingRegressor(max_iter=100,loss='least_absolute_deviation',warm_start=True)
+    hgbr = HistGradientBoostingRegressor(max_iter=100,loss='absolute_error',warm_start=True)
     hgbr.fit(dates,prices)
     variance_gbr = explained_variance_score(prices,gbr.predict(dates), multioutput='variance_weighted')
     variance_adr = explained_variance_score(prices,adr.predict(dates),multioutput='variance_weighted')
