@@ -65,5 +65,3 @@ def twitter_analysis(compname):
     except Exception as e:
         logger.error(f"Error analyzing Twitter sentiment: {e}")
         return [33.33, 33.33, 33.34]
-# for i in vals:
-#     print(i)

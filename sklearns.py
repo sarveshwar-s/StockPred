@@ -64,14 +64,3 @@ def gbr_estimator(dates, prices):
         variance_scores.append(variance_score)
     
     return variance_scores
-
-
-# print(indate)
-# print(inprice)
-# newdate=[]
-# for i in range(len(indate)):
-#     newdate.append([int((indate[i]).replace('-',''))])
-# print(newdate)
-# infypri = prediction_close(newdate,inprice,[[20200101]])
-# print(infypri)
-####################################################################INFY NSE PRICE PREDICTION CLOSE ###################################################
