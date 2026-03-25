@@ -11,8 +11,6 @@ from sklearn.ensemble import AdaBoostRegressor
 from sklearn.ensemble import BaggingRegressor
 from sklearn.ensemble import GradientBoostingRegressor
 
-# explicitly require this experimental feature for histgradientboostingRegressor as it is still in experimental stage
-from sklearn.experimental import enable_hist_gradient_boosting
 from sklearn.ensemble import HistGradientBoostingRegressor
 
 from sklearn.metrics import explained_variance_score
@@ -47,14 +45,14 @@ def intrapred(minutes, prices, x):
     returnprice.append(adr_predicted)
     returnscore.append(adr.score(minutes, prices))
 
-    gbr = GradientBoostingRegressor(n_estimators=100, loss="lad")
+    gbr = GradientBoostingRegressor(n_estimators=100, loss="absolute_error")
     gbr.fit(minutes, prices)
     gbr_predicted = gbr.predict(x)
     print("GBR PREDICTED", gbr_predicted, gbr.score(minutes, prices))
     returnprice.append(gbr_predicted)
     returnscore.append(gbr.score(minutes, prices))
 
-    hgbr = HistGradientBoostingRegressor(max_iter=100, loss="least_absolute_deviation", warm_start=True)
+    hgbr = HistGradientBoostingRegressor(max_iter=100, loss="absolute_error", warm_start=True)
     hgbr.fit(minutes, prices)
     hgbr_predicted = hgbr.predict(x)
     print("HGBR predicted", hgbr_predicted, hgbr.score(minutes, prices))
