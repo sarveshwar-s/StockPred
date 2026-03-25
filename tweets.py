@@ -1,52 +1,69 @@
-from textblob import TextBlob
-import tweepy as tw
-import requests as req
 import os
-import pandas as pd
+from textblob import TextBlob
+import tweepy
+import logging
 
-consumer_key = "YOUR_CONSUMER_KEY"
-consumer_secret = "YOUR_CONSUMER_SECRET_KEY"
-access_token = "YOUR_ACCESS_TOKEN"
-access_token_secret = "YOUR_SECRET_ACCESS_TOKEN"
+logger = logging.getLogger(__name__)
 
 
 def twitter_analysis(compname):
-    auth = tw.OAuthHandler(consumer_key, consumer_secret)
-    auth.set_access_token(access_token, access_token_secret)
-    api = tw.API(auth, wait_on_rate_limit=True)
+    """Analyze Twitter sentiment for a company"""
+    # Get Twitter API credentials from environment
+    consumer_key = os.environ.get('TWITTER_CONSUMER_KEY')
+    consumer_secret = os.environ.get('TWITTER_CONSUMER_SECRET')
+    access_token = os.environ.get('TWITTER_ACCESS_TOKEN')
+    access_token_secret = os.environ.get('TWITTER_ACCESS_TOKEN_SECRET')
+    
+    # Check if all credentials are available
+    if not all([consumer_key, consumer_secret, access_token, access_token_secret]):
+        logger.warning("Twitter API credentials not found, returning neutral sentiment")
+        return [33.33, 33.33, 33.34]  # Default neutral sentiment
+    
+    try:
+        auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
+        auth.set_access_token(access_token, access_token_secret)
+        api = tweepy.API(auth, wait_on_rate_limit=True)
 
-    search_words = compname
-    search_words = search_words + " " + "-filter:retweets"
-    date_since = "2020-03-05"
-
-    tweets = tw.Cursor(api.search_tweets, q=search_words, lang="en", since=date_since).items(10)
-    total = 0
-    positive = 0
-    negative = 0
-    neutral = 0
-    for items in tweets:
-        blobs = TextBlob(items.text)
-        for sentence in blobs.sentences:
-            print(sentence.sentiment.polarity)
-            if sentence.sentiment.polarity > 0:
+        search_words = f"{compname} -filter:retweets"
+        
+        tweets = tweepy.Cursor(
+            api.search_tweets, 
+            q=search_words, 
+            lang="en", 
+            tweet_mode='extended'
+        ).items(20)  # Increase sample size
+        
+        positive = 0
+        negative = 0
+        neutral = 0
+        total_tweets = 0
+        
+        for tweet in tweets:
+            blob = TextBlob(tweet.full_text)
+            sentiment = blob.sentiment.polarity
+            total_tweets += 1
+            
+            if sentiment > 0.1:
                 positive += 1
-            elif sentence.sentiment.polarity < 0:
+            elif sentiment < -0.1:
                 negative += 1
             else:
                 neutral += 1
-            total += sentence.sentiment.polarity
-    positive_perentage = (positive / 10) * 100
-    negative_percentage = (negative / 10) * 100
-    neutral_percentage = 100 - (positive_perentage + negative_percentage)
-    print("positive  %", positive_perentage, "negative %", negative_percentage, "neutral %", neutral_percentage)
-    print(total)
-    persentlist = []
-    persentlist.append(positive_perentage)
-    persentlist.append(negative_percentage)
-    persentlist.append(neutral_percentage)
-    return persentlist
-
-
-# vals = twitter_analysis("amazon")
+        
+        if total_tweets == 0:
+            return [33.33, 33.33, 33.34]
+            
+        positive_percentage = (positive / total_tweets) * 100
+        negative_percentage = (negative / total_tweets) * 100
+        neutral_percentage = (neutral / total_tweets) * 100
+        
+        return [positive_percentage, negative_percentage, neutral_percentage]
+        
+    except tweepy.TooManyRequests:
+        logger.warning("Twitter API rate limit exceeded")
+        return [33.33, 33.33, 33.34]
+    except Exception as e:
+        logger.error(f"Error analyzing Twitter sentiment: {e}")
+        return [33.33, 33.33, 33.34]
 # for i in vals:
 #     print(i)

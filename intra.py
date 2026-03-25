@@ -1,74 +1,52 @@
-# import pandas as pd
-# import matplotlib.pyplot as plt
 import numpy as np
-import time
 from sklearn.svm import SVR
-import requests as req
-
-# from sklearn.linear_model import LogisticRegression
-from sklearn.ensemble import RandomForestRegressor
-from sklearn.ensemble import AdaBoostRegressor
-from sklearn.ensemble import BaggingRegressor
-from sklearn.ensemble import GradientBoostingRegressor
-
-from sklearn.ensemble import HistGradientBoostingRegressor
-
+from sklearn.ensemble import (
+    RandomForestRegressor,
+    AdaBoostRegressor,
+    BaggingRegressor,
+    GradientBoostingRegressor,
+    HistGradientBoostingRegressor
+)
 from sklearn.metrics import explained_variance_score
-from sklearn import neighbors
-
-from sklearn import preprocessing
-from sklearn import utils
-import schedule
 
 
 def intrapred(minutes, prices, x):
-    returnprice = []
-    returnscore = []
-    rfc = RandomForestRegressor(n_estimators=100)
+    """Predict intraday stock prices using multiple ML algorithms"""
+    predictions = []
+    scores = []
+    
+    # Random Forest Regressor
+    rfc = RandomForestRegressor(n_estimators=100, random_state=42)
     rfc.fit(minutes, prices)
-    rfc_predicted = rfc.predict(x)
-    print("PREDICTED RFC VALUE FOR", x, "MINUTE IS", rfc_predicted, "THE SCORE IS", rfc.score(minutes, prices))
-    returnprice.append(rfc_predicted)
-    returnscore.append(rfc.score(minutes, prices))
+    predictions.append(rfc.predict(x))
+    scores.append(rfc.score(minutes, prices))
 
-    bgr = BaggingRegressor(n_estimators=100)
+    # Bagging Regressor
+    bgr = BaggingRegressor(n_estimators=100, random_state=42)
     bgr.fit(minutes, prices)
-    bgr_predicted = bgr.predict(x)
-    print("BGR PREDICTED", bgr_predicted, bgr.score(minutes, prices))
-    returnprice.append(bgr_predicted)
-    returnscore.append(bgr.score(minutes, prices))
+    predictions.append(bgr.predict(x))
+    scores.append(bgr.score(minutes, prices))
 
-    adr = AdaBoostRegressor(n_estimators=100, learning_rate=1)
+    # AdaBoost Regressor
+    adr = AdaBoostRegressor(n_estimators=100, learning_rate=1, random_state=42)
     adr.fit(minutes, prices)
-    adr_predicted = adr.predict(x)
-    print("ADR PREDICTED", adr_predicted, adr.score(minutes, prices))
-    returnprice.append(adr_predicted)
-    returnscore.append(adr.score(minutes, prices))
+    predictions.append(adr.predict(x))
+    scores.append(adr.score(minutes, prices))
 
-    gbr = GradientBoostingRegressor(n_estimators=100, loss="absolute_error")
+    # Gradient Boosting Regressor
+    gbr = GradientBoostingRegressor(n_estimators=100, loss="absolute_error", random_state=42)
     gbr.fit(minutes, prices)
-    gbr_predicted = gbr.predict(x)
-    print("GBR PREDICTED", gbr_predicted, gbr.score(minutes, prices))
-    returnprice.append(gbr_predicted)
-    returnscore.append(gbr.score(minutes, prices))
+    predictions.append(gbr.predict(x))
+    scores.append(gbr.score(minutes, prices))
 
-    hgbr = HistGradientBoostingRegressor(max_iter=100, loss="absolute_error", warm_start=True)
+    # Histogram Gradient Boosting Regressor
+    hgbr = HistGradientBoostingRegressor(max_iter=100, loss="absolute_error", random_state=42)
     hgbr.fit(minutes, prices)
-    hgbr_predicted = hgbr.predict(x)
-    print("HGBR predicted", hgbr_predicted, hgbr.score(minutes, prices))
-    returnprice.append(hgbr_predicted)
-    returnscore.append(hgbr.score(minutes, prices))
-    return [returnprice, returnscore]
+    predictions.append(hgbr.predict(x))
+    scores.append(hgbr.score(minutes, prices))
+    
+    return [predictions, scores]
 
-
-dates = []
-prices = []
-# for i in range(1,5):
-#     api_url = "https://cloud.iexapis.com/stable/stock/aapl/intraday-prices?token=pk_16f5315051b240f5a1d5058dd880179b"
-#     response = req.get(api_url)
-#     data_30 = response.json()
-#     print("The length is ", len(data_30))
-#     time.sleep(60)
 api_url = "https://cloud.iexapis.com/stable/stock/aapl/intraday-prices?token=pk_16f5315051b240f5a1d5058dd880179b"
 response = req.get(api_url)
 data_30 = response.json()
